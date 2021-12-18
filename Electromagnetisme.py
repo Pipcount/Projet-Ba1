@@ -3,8 +3,7 @@ import math as m
 import CONSTANTES as C
 from Oscillation import Oscilliation
 
-o = Oscilliation()
-omega_n = o.omega_n
+
 
 
 """
@@ -22,7 +21,7 @@ class ElectroMec:
         self.hcoil = C.LONGUEUR_BOBINE
         self.Ri = C.RAYON_BOBINE
         self.Ro_max = C.EPAISSEUR_BOBINE_MAX
-        self.omega_n = omega_n  # omega calculé dans partie oscillation
+        self.omega_n = C.FREQUENCE_PROPRE_TABLE  # omega calculé dans partie oscillation
         self.A = C.AMPLITUDE  # amplitude du mouvement de la table
         self.Xi_m = C.Xi_m    # valeur a déterminer expérimentalement(à changer dans CONSTANTES.py)
         self.k_co = C.k_co    # trouvé page 22 dans https://uv.ulb.ac.be/pluginfile.php/3273876/mod_resource/content/2/Calcul_puissance_harvester.pdf
@@ -76,10 +75,9 @@ class ElectroMec:
             if P > best_p:
                 best_p = P
                 best = (fil, N, de, P, epaisseur_bobine)
-        res = f" fil idéal: {best[0]}, nombre de spires: {best[1]}, longueur de la bobine: {self.hcoil} mm, rayon de la bobine: {self.Ri} mm, \n" \
+        print(f" fil idéal: {best[0]}, nombre de spires: {best[1]}, longueur de la bobine: {self.hcoil} mm, rayon de la bobine: {self.Ri} mm, \n" \
               f", puissance avec notre bobine: {best[3]}, épaisseur de la conche " \
-              f"de fil sur la bobine: {epaisseur_bobine} mm. "
-        return res
+              f"de fil sur la bobine: {epaisseur_bobine} mm. ")
 
     """
     A faire plus tard

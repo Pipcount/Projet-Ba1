@@ -18,15 +18,7 @@ class Oscilliation:
 
     def longueur_poutre_id(self):
         return ((3 * self.young * self.inertie) / (self.omega ** 2 * self.masse)) ** (1/3)
-
-
-    def calcul_omega_n(self):
-        """
-        Calcule le omega_n de la poutre
-        """
-        k = (3 * self.young * self.inertie) / (self.longueur_poutre ** 3)
-        return (k / self.masse) ** (1/2)
-  
+ 
     
     def longueur_poutre_res(self):
         """
