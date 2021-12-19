@@ -13,7 +13,6 @@ class Oscilliation:
         self.omega = C.FREQUENCE_PROPRE_TABLE
         self.masse = C.MASSE
         self.longueur_poutre = self.longueur_poutre_id()
-        self.omega_n = self.calcul_omega_n()
 
 
     def longueur_poutre_id(self):

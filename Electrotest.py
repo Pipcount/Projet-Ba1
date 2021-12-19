@@ -24,10 +24,10 @@ class ElectroMec:
         self.Ro_max = C.EPAISSEUR_BOBINE_MAX
         self.omega_n = C.FREQUENCE_PROPRE_TABLE  # omega calculé dans partie oscillation
         self.A = C.AMPLITUDE  # amplitude du mouvement de la table
-        self.Xi_m = C.Xi_m    # valeur a déterminer expérimentalement(à changer dans CONSTANTES.py)
-        self.k_co = C.k_co    # trouvé page 22 dans https://uv.ulb.ac.be/pluginfile.php/3273876/mod_resource/content/2/Calcul_puissance_harvester.pdf
         self.m = C.MASSE  #   A déterminer, à changer dans COUNSTANTES
-        self.dm =  self.calcul_dm()
+        self.hcoil = 0.035 # en m
+        self.dm = C.dm
+
 
     def calcul_resistance_m(self):
         """
@@ -41,16 +41,35 @@ class ElectroMec:
 
         return dico_fils
 
-    def calcul_dm(self):
+    
+    def calcul_N(self):
         """
-        dm = d dans formules 
-        """
+        Eq 1 : N = self.hcoil * (Ro - Ri) / ((self.dico_fils[fil][0] * 2) ** 2)
+        Eq 2 : Rc = N * m.pi * (Ro - Ri) * self.dico_fils[fil][1]
+        Eq 3 : Rl = Rc + (N * self.B * (Ro + ri)) ** 2) / self.dm
+        Eq 4 : de = self.dm = ((N * self.B * (Ro + ri)) ** 2) / (Rc + Rl)
 
-    
-    
-    
-    
-    
+        """
+        res = ""
+        borne = 100
+        for fil in self.dico_fils:
+            for Ri_mm in range(1, 20):
+                Ri = Ri_mm / 1000 #pour mettre en mètres
+                for Ro_mm in range(1, 41):
+                    Ro = Ro_mm / 1000  #pour mettre en mètres
+                    if Ro != Ri:
+                        N = self.hcoil * (Ro - Ri) / ((self.dico_fils[fil][0] / 500) ** 2)  #eq 1
+                        Rc = N * m.pi * (Ro - Ri) * self.dico_fils[fil][1]  #eq 
+                        Rl = Rc + ((N * self.B * (Ro + Ri)) ** 2) / self.dm  # eq 3
+                        de = ((N * self.B * (Ro + Ri)) ** 2) / (Rc + Rl)  # eq 4
+                        comp = abs(de - self.dm) # on regarde si de es t proche de dm 
+                        if comp < borne:
+                            res = ""
+                            borne = comp
+                            res = f"fil : {fil}, Ri : {Ri}, Ro : {Ro}, Rc : {Rc}, Rl = {Rl}, nombre de spires : {N}"
+        return res
+
+   
     
     def puissance_max(self):
         """
@@ -59,3 +78,6 @@ class ElectroMec:
         return (self.masse ** 2 * self.omega_n ** 4 * self.A ** 2) / (8 * self.dm)  # formule 2.39
 
   
+
+
+

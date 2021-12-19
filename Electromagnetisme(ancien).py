@@ -1,7 +1,7 @@
 
 import math as m
 import CONSTANTES as C
-from Oscillation import Oscilliation
+
 
 
 

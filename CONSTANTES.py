@@ -28,6 +28,7 @@ EPAISSEUR_BOBINE_MAX = 10   # mm
 
 """ amortissement """
 
+dm = 0.19717 
 Xi_m = 0.036862
 
 """  magnétisme  """
